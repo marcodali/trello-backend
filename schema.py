@@ -52,8 +52,11 @@ class DeleteCard(Mutation):
     card = Field(lambda: CardType)
 
     def mutate(self, info, id):
-        Card.delete_card(id)
-        return DeleteCard(card=None)
+        card = Card.get_card(id)
+        if card:
+            Card.delete_card(id)
+            return DeleteCard(card=card)
+        return None
 
 class Mutation(ObjectType):
     create_card = CreateCard.Field()

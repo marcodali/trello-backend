@@ -29,14 +29,20 @@ class Card:
     
     @staticmethod
     def update_card(id, title, description, status):
+        update_expression = "set title=:t, description=:d, #s=:s"
+        expression_attribute_names = {
+            "#s": "status"
+        }
+        expression_attribute_values = {
+            ':t': title,
+            ':d': description,
+            ':s': status
+        }
         table.update_item(
             Key={'id': id},
-            UpdateExpression="set title=:t, description=:d, status=:s",
-            ExpressionAttributeValues={
-                ':t': title,
-                ':d': description,
-                ':s': status
-            },
+            UpdateExpression=update_expression,
+            ExpressionAttributeNames=expression_attribute_names,
+            ExpressionAttributeValues=expression_attribute_values,
             ReturnValues="UPDATED_NEW"
         )
     
