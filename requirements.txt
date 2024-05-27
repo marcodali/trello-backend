@@ -4,6 +4,7 @@ boto3==1.34.113
 botocore==1.34.113
 click==8.1.7
 Flask==3.0.3
+Flask-Cors==4.0.1
 Flask-GraphQL==2.0.1
 graphene==2.1.9
 graphql-core==2.3.2
