@@ -26,7 +26,7 @@ class Card:
                 'status': status
             }
         )
-    
+
     @staticmethod
     def update_card(id, title, description, status):
         update_expression = "set title=:t, description=:d, #s=:s"
@@ -45,7 +45,20 @@ class Card:
             ExpressionAttributeValues=expression_attribute_values,
             ReturnValues="UPDATED_NEW"
         )
-    
+
     @staticmethod
     def delete_card(id):
         table.delete_item(Key={'id': id})
+
+    @staticmethod
+    def query_cards_by_status(status, last_evaluated_key=None, limit=10):
+        query_kwargs = {
+            'IndexName': 'StatusIndex',
+            'KeyConditionExpression': Key('status').eq(status),
+            'Limit': limit,
+        }
+        if last_evaluated_key:
+            query_kwargs['ExclusiveStartKey'] = last_evaluated_key
+        
+        response = table.query(**query_kwargs)
+        return response.get('Items', []), response.get('LastEvaluatedKey')
