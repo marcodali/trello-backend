@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, request, jsonify
 from flask_graphql import GraphQLView
 from flask_cors import CORS
 from schema import schema
@@ -18,5 +18,10 @@ app.add_url_rule(
     view_func=GraphQLView.as_view('graphql', schema=schema, graphiql=True)
 )
 
+# Endpoint de health check
+@app.route('/health', methods=['GET'])
+def health_check():
+    return jsonify({"status": "ok"}), 200
+
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=3322)
+    app.run(debug=True, host='0.0.0.0')
